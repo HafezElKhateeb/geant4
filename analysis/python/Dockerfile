@@ -1,32 +1,19 @@
-# pyodide only bundles a single version of python
-FROM python:3.13-slim as builder
+FROM python:3.14-slim
 
-# jupyterlite-core: build jupyterlite site
-# jupyterlite-pyodide-kernel: pyodide kernel for jupyterlite
-RUN pip install --upgrade pip && \
-    pip install jupyterlite-core jupyterlite-pyodide-kernel
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir uproot ipympl jupyter-server ipykernel pandas
 
-# add pyodide tar ball to /app
-WORKDIR /app
-ADD https://github.com/pyodide/pyodide/releases/download/0.29.3/pyodide-0.29.3.tar.bz2 .
+WORKDIR /root/geant4
+EXPOSE 8888
 
-RUN mkdir /app/wheelhouse && \
-    pip download --only-binary=:all: --dest /app/wheelhouse \
-    uproot matplotlib
+ENV QT_QPA_PLATFORM=offscreen
+# send logs to stdout immediately
+ENV PYTHONUNBUFFERED=1
 
-RUN jupyter lite build \
-    --pyodide pyodide-0.29.3.tar.bz2 \
-    --piplite-wheels /app/wheelhouse
-
-# Stage 2
-FROM nginx:alpine
-
-WORKDIR /usr/share/nginx/html/
-
-COPY --from=builder /app/_output/ .
-
-# ensure the data directory exists for the bind mount
-RUN mkdir -p geant4
-
-# indicate that this is a web server
-EXPOSE 80
+CMD ["jupyter", "server", \
+    "--ip=0.0.0.0", \
+    "--no-browser", \
+    "--allow-root", \
+    "--ServerApp.disable_check_xsrf=True", \
+    "--ServerApp.token=''", \
+    "--ServerApp.password=''"]
