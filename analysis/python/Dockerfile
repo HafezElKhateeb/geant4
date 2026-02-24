@@ -3,10 +3,8 @@ FROM python:3.13-slim as builder
 
 # jupyterlite-core: build jupyterlite site
 # jupyterlite-pyodide-kernel: pyodide kernel for jupyterlite
-# jupyterlite-lab: jupyterlite lab interface
-RUN pip install jupyterlite-core \
-    jupyterlite-pyodide-kernel \
-    "jupyterlite-lab>=0.4.3"
+RUN pip install --upgrade pip && \
+    pip install jupyterlite-core jupyterlite-pyodide-kernel
 
 # add pyodide tar ball to /app
 WORKDIR /app
