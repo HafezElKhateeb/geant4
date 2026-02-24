@@ -76,12 +76,14 @@ services:
     ports: [ "8888:8888" ] # only exposed with `up`, not 'run`
     volumes: [ ".:/root/geant4" ]
     build: analysis/root/notebook # docker-compose build notebook
-  jupyter:
-    image: physino/jupyterlite
-    profiles: [ "jupyter" ]
-    ports: [ "8081:80" ]
-    volumes: [ ".:/usr/share/nginx/html/geant4" ]
-    build: analysis/python
+  python:
+    image: physino/python
+    profiles: [ "python" ]
+    ports: [ "8081:8888" ]
+    volumes: [ ".:/root/geant4" ]
+    build:
+      context: analysis/python
+      platforms: [ "linux/amd64", "linux/arm64" ]
   jekyll:
     # docker compuse up
     image: physino/jekyll:pages
