@@ -17,8 +17,23 @@
             }
         },
         {
+            "label": "Docker Compose: Start Jupyter server",
+            "command": "docker compose --profile python up -d",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Open HepRApp in simple browser",
+            "type": "shell",
+            "command": "${input:openSimpleBrowser}",
+            "group": "build"
+        },
+        {
             "label": "Docker Compose: Launch HepRApp",
-            "detail": "launch HepRApp in a browser",
+            "detail": "serve HepRApp in a VNC viewer",
             "type": "shell",
             "command": "export RES='${input:resChoice}'; export W=${RES%x*}; export H=${RES#*x}; DISPLAY_WIDTH=$W DISPLAY_HEIGHT=$H docker compose --profile heprapp up",
             "group": "build",
@@ -43,6 +58,14 @@
                 "1920x1080"
             ],
             "default": "1280x720"
+        },
+        {
+            "id": "openSimpleBrowser",
+            "type": "command",
+            "command": "simpleBrowser.show",
+            "args": [
+                "http://localhost:8080/vnc.html?autoconnect=true&scale=true"
+            ]
         }
     ]
 }
