@@ -1,0 +1,9 @@
+// define a 10x10x10 m3 vacuum box as the world
+:volu world BOX 5*m 5*m 5*m G4_Galactic
+:vis world OFF
+
+:volu box BOX 5*cm 5*cm 5*cm G4_WATER
+
+:rotm r000 0 0 0
+:place box 1 world r000 0 0 0
+:color box 0.77 0.51 0.27
