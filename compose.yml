@@ -13,7 +13,7 @@ services:
       platforms: [ "linux/amd64" ] # for build time
   novnc: # X window display sidecar for heprapp and root
     image: theasp/novnc
-    profiles: [ "heprapp", "root" ]
+    profiles: [ "heprapp" ]
     container_name: noVNC
     platform: linux/amd64
     ports: [ "8080:8080" ]
@@ -56,23 +56,25 @@ services:
       context: vis/HepRepFile/app
       platforms: [ "linux/amd64", "linux/arm64" ]
   root: # docker compose --profile root up
-    command: /usr/bin/bash # launch a command line to run root
+    command: >
+      bash -c "socat TCP-LISTEN:9001,fork,reuseaddr TCP:127.0.0.1:9375 & 
+      root -l --web=server:9375 -e \"new TBrowser;\""
     image: physino/root # https://hub.docker.com/r/physino/root
     profiles: [ "root" ]
-    environment:
-      - DISPLAY=host.docker.internal:0.0
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    ports: [ "9375:9001" ]
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
       - .:/root/geant4
     working_dir: /root/geant4
-    build: analysis/root
+    stdin_open: true
+    tty: true
+    build:
+      context: analysis/root
+      platforms: [ "linux/amd64", "linux/arm64" ]
   notebook:
     # docker-compose up notebook
     command: /usr/bin/root --notebook --allow-root --no-browser --ip=0.0.0.0
     image: physino/root:notebook
-    profiles: [ "root" ]
+    profiles: [ "notebook" ]
     ports: [ "8888:8888" ] # only exposed with `up`, not 'run`
     volumes: [ ".:/root/geant4" ]
     build: analysis/root/notebook # docker-compose build notebook
