@@ -27,13 +27,20 @@
       }
     },
     {
-      "label": "Open HepRApp in simple browser",
+      "label": "Open HepRApp in Editor",
+      "detail": "open HepRApp in the simple browser in the editor",
       "type": "shell",
-      "command": "${input:openSimpleBrowser}",
-      "group": "build"
+      "command": "echo ${input:openSimpleBrowser}",
+      "group": "build",
+      "presentation": {
+        "reveal": "never",
+        "echo": false,
+        "focus": false,
+        "panel": "shared"
+      }
     },
     {
-      "label": "Docker Compose: Launch HepRApp",
+      "label": "Docker Compose: Serve HepRApp",
       "detail": "serve HepRApp in a VNC viewer",
       "type": "shell",
       "command": "export RES='${input:resChoice}'; export W=${RES%x*}; export H=${RES#*x}; DISPLAY_WIDTH=$W DISPLAY_HEIGHT=$H docker compose --profile heprapp up",
