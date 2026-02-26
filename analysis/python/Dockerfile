@@ -4,7 +4,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir uproot ipympl jupyter-server ipykernel pandas
 
 WORKDIR /root/geant4
-EXPOSE 8888
+EXPOSE 8988
 
 ENV QT_QPA_PLATFORM=offscreen
 # send logs to stdout immediately
@@ -12,8 +12,7 @@ ENV PYTHONUNBUFFERED=1
 
 CMD ["jupyter", "server", \
     "--ip=0.0.0.0", \
+    "--port=8988", \
     "--no-browser", \
     "--allow-root", \
-    "--ServerApp.disable_check_xsrf=True", \
-    "--ServerApp.token=''", \
-    "--ServerApp.password=''"]
+    "--ServerApp.disable_check_xsrf=True"]

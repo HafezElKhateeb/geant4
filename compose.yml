@@ -81,7 +81,8 @@ services:
   python:
     image: physino/python
     profiles: [ "python" ]
-    ports: [ "8081:8888" ]
+    container_name: Python
+    ports: [ "8988:8988" ]
     volumes: [ ".:/root/geant4" ]
     build:
       context: analysis/python

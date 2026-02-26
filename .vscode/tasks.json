@@ -1,71 +1,64 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Docker Compose: exec geant4 tmux",
-            "detail": "start geant4 container in background and attach tmux",
-            "type": "shell",
-            "command": "docker compose --profile geant4 up -d && docker compose exec geant4 tmux -u",
-            "group": "build",
-            "presentation": {
-                "echo": false,
-                "focus": true,
-                "clear": true,
-                "close": true
-            }
-        },
-        {
-            "label": "Docker Compose: Start Jupyter server",
-            "command": "docker compose --profile python up -d",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            }
-        },
-        {
-            "label": "Open HepRApp in simple browser",
-            "type": "shell",
-            "command": "${input:openSimpleBrowser}",
-            "group": "build"
-        },
-        {
-            "label": "Docker Compose: Launch HepRApp",
-            "detail": "serve HepRApp in a VNC viewer",
-            "type": "shell",
-            "command": "export RES='${input:resChoice}'; export W=${RES%x*}; export H=${RES#*x}; DISPLAY_WIDTH=$W DISPLAY_HEIGHT=$H docker compose --profile heprapp up",
-            "group": "build",
-            "presentation": {
-                "echo": false,
-                "focus": true,
-                "clear": true,
-                "close": false
-            }
-        }
-    ],
-    "inputs": [
-        {
-            "id": "resChoice",
-            "type": "pickString",
-            "description": "Choose a resolution (Note: Browser UI takes ~100px of height)",
-            "options": [
-                "1024x768",
-                "1280x720",
-                "1440x900",
-                "1600x900",
-                "1920x1080"
-            ],
-            "default": "1280x720"
-        },
-        {
-            "id": "openSimpleBrowser",
-            "type": "command",
-            "command": "simpleBrowser.show",
-            "args": [
-                "http://localhost:8080/vnc.html?autoconnect=true&scale=true"
-            ]
-        }
-    ]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Docker Compose: exec geant4 tmux",
+      "detail": "start geant4 container in background and attach tmux",
+      "type": "shell",
+      "command": "docker compose --profile geant4 up -d && docker compose exec geant4 tmux -u",
+      "group": "build",
+      "presentation": {
+        "echo": false,
+        "focus": true,
+        "clear": true,
+        "close": true
+      }
+    },
+    {
+      "label": "Docker Compose: Start Jupyter server",
+      "type": "shell",
+      "command": "docker compose --profile python up",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Open HepRApp in simple browser",
+      "type": "shell",
+      "command": "${input:openSimpleBrowser}",
+      "group": "build"
+    },
+    {
+      "label": "Docker Compose: Launch HepRApp",
+      "detail": "serve HepRApp in a VNC viewer",
+      "type": "shell",
+      "command": "export RES='${input:resChoice}'; export W=${RES%x*}; export H=${RES#*x}; DISPLAY_WIDTH=$W DISPLAY_HEIGHT=$H docker compose --profile heprapp up",
+      "group": "build",
+      "presentation": {
+        "echo": false,
+        "focus": true,
+        "clear": true,
+        "close": false
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "resChoice",
+      "type": "pickString",
+      "description": "Choose a resolution (Note: Browser UI takes ~100px of height)",
+      "options": ["1024x768", "1280x720", "1440x900", "1600x900", "1920x1080"],
+      "default": "1280x720"
+    },
+    {
+      "id": "openSimpleBrowser",
+      "type": "command",
+      "command": "simpleBrowser.show",
+      "args": ["http://localhost:8080/vnc.html?autoconnect=true&scale=true"]
+    }
+  ]
 }
